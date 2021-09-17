@@ -1,13 +1,16 @@
 package com.example.musicapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
     BottomNavigationView bottomNavigation;
     BadgeDrawable badgeDrawable;
     @Override
@@ -30,6 +33,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initEvent() {
+        bottomNavigation.setOnItemSelectedListener(this);
+    }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
     }
 }
