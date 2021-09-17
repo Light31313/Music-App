@@ -2,6 +2,7 @@
     <string name="app_name">Music Application</string>
     <string name="home">Home</string>
     <string name="favorite">Favorite</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="list_song">List song</string>
+    <string name="song_name">song name</string>
+    <string name="singer">singer</string>
 </resources>
