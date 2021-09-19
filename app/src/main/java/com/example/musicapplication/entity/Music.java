@@ -1,6 +1,8 @@
 package com.example.musicapplication.entity;
 
-public class Music {
+import java.io.Serializable;
+
+public class Music implements Serializable {
     private int imageMusic;
     private String songName;
     private String singer;

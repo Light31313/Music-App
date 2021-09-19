@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         badgeDrawable = bottomNavigation.getOrCreateBadge(R.id.page_home);
         //badgeDrawable.setVisible(false);
         badgeDrawable.setNumber(99);
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, MusicFragment.class, null).commit();
     }
 
     private void initEvent() {

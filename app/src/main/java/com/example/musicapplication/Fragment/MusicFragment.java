@@ -42,7 +42,7 @@ public class MusicFragment extends Fragment {
     private void initComponent() {
         musicList = new ArrayList<>();
         addMusic();
-        adapter = new MusicAdapter(getContext() , musicList);
+        adapter = new MusicAdapter(this , musicList);
         rvListSong.setAdapter(adapter);
         rvListSong.setLayoutManager(new LinearLayoutManager(getContext()));
     }

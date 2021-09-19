@@ -1,6 +1,7 @@
 package com.example.musicapplication.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.musicapplication.Fragment.MusicFragment;
+import com.example.musicapplication.Fragment.PlayFragment;
 import com.example.musicapplication.R;
 import com.example.musicapplication.entity.Music;
 
@@ -19,11 +22,11 @@ import java.util.List;
 
 public class MusicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context context;
+    private MusicFragment musicFragment;
     private List<Music> musicList;
 
-    public MusicAdapter(Context context, List<Music> musicList) {
-        this.context = context;
+    public MusicAdapter(MusicFragment musicFragment, List<Music> musicList) {
+        this.musicFragment = musicFragment;
         this.musicList = musicList;
     }
 
@@ -52,7 +55,9 @@ public class MusicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         musicViewHolder.songName.setText(music.getSongName());
         musicViewHolder.singer.setText(music.getSinger());
         musicViewHolder.clMusic.setOnClickListener(view -> {
-
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("song_info", music);
+            musicFragment.getParentFragmentManager().beginTransaction().add(R.id.fv_play_music, PlayFragment.class, bundle).addToBackStack(null).commit();
         });
 
     }

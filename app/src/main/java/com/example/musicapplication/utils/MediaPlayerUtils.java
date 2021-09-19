@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.RawRes;
 
 import java.io.IOException;
 
@@ -22,11 +23,10 @@ public class MediaPlayerUtils implements MediaPlayer.OnBufferingUpdateListener, 
         setState(State.IDLE);
     }
 
-    public void setDataSource(Context context, @IdRes int resId) {
+    public void setDataSource(Context context, int resId) {
         mediaPlayer = MediaPlayer.create(context, resId);
         setState(State.INITIALIZED);
         registerListener();
-        prepareAsync();
     }
 
     public void setDataSource(Context context, Uri uri) {
@@ -43,6 +43,10 @@ public class MediaPlayerUtils implements MediaPlayer.OnBufferingUpdateListener, 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isPlaying(){
+        return mediaPlayer.isPlaying();
     }
 
     public void setDataSource(String url) {
