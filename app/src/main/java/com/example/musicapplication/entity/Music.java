@@ -3,32 +3,33 @@ package com.example.musicapplication.entity;
 import java.io.Serializable;
 
 public class Music implements Serializable {
-    private int imageMusic;
+    private int id;
+    private String imageMusic;
     private String songName;
     private String singer;
-    private int source;
+    private String source;
 
-
-
-    public Music(String title, String singer, int source) {
-        this.songName = title;
+    public Music(int id, String imageMusic, String songName, String singer, String source) {
+        this.id = id;
+        this.imageMusic = imageMusic;
+        this.songName = songName;
         this.singer = singer;
         this.source = source;
     }
 
-    public int getSource() {
-        return source;
+    public int getId() {
+        return id;
     }
 
-    public void setSource(int source) {
-        this.source = source;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getImageMusic() {
+    public String getImageMusic() {
         return imageMusic;
     }
 
-    public void setImageMusic(int imageMusic) {
+    public void setImageMusic(String imageMusic) {
         this.imageMusic = imageMusic;
     }
 
@@ -46,5 +47,13 @@ public class Music implements Serializable {
 
     public void setSinger(String singer) {
         this.singer = singer;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

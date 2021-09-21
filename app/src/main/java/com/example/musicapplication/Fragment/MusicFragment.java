@@ -40,20 +40,14 @@ public class MusicFragment extends Fragment {
     }
 
     private void initComponent() {
-        musicList = new ArrayList<>();
-        addMusic();
-        adapter = new MusicAdapter(this , musicList);
+        Bundle bundle = getArguments();
+        if (bundle != null)
+            musicList = (List<Music>) bundle.getSerializable("musicList");
+        adapter = new MusicAdapter(this, musicList);
         rvListSong.setAdapter(adapter);
         rvListSong.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private void addMusic() {
-        musicList.add(new Music("Japanese song", "Belle", R.raw.belle_mv));
-        musicList.add(new Music("Elesa pokemon theme", "Elesa", R.raw.elesa_pokemon_theme));
-        musicList.add(new Music("Outer wild theme", "traveler", R.raw.outer_wild_ost));
-        musicList.add(new Music("Some thing just like this", "Chainsmokers", R.raw.something_just_like_this));
-        musicList.add(new Music("Vietnamese song", "Vietnamese singer", R.raw.vietnamese_song));
-    }
 
     private void initEvent() {
     }

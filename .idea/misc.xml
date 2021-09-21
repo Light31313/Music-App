@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.225" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/drawable/ic_baseline_loop_24.xml" value="0.2490740740740741" />
+        <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/drawable/ic_baseline_pause_24.xml" value="0.225" />
+        <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/drawable/ic_baseline_pause_circle_outline_24.xml" value="0.225" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.2490740740740741" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/drawable/ic_baseline_play_circle_outline_24.xml" value="0.26614583333333336" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/drawable/ic_baseline_skip_next_24.xml" value="0.2490740740740741" />
@@ -11,8 +14,10 @@
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/drawable/ic_baseline_swap_calls_24.xml" value="0.2490740740740741" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/drawable/ic_outline_stop_circle_24.xml" value="0.2490740740740741" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/drawable/play_music_background.xml" value="0.2490740740740741" />
+        <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/drawable/splash_background.xml" value="0.23703703703703705" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/activity_play_music.xml" value="0.25" />
+        <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/activity_splash_screen.xml" value="0.12708333333333333" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/fragment_favorite.xml" value="0.25" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/fragment_music.xml" value="0.25" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/fragment_play.xml" value="0.25" />

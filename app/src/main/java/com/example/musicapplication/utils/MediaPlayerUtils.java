@@ -45,10 +45,6 @@ public class MediaPlayerUtils implements MediaPlayer.OnBufferingUpdateListener, 
         }
     }
 
-    public boolean isPlaying(){
-        return mediaPlayer.isPlaying();
-    }
-
     public void setDataSource(String url) {
         try {
             mediaPlayer.setAudioAttributes(
@@ -65,6 +61,10 @@ public class MediaPlayerUtils implements MediaPlayer.OnBufferingUpdateListener, 
             setState(State.ERROR);
             listener.onError();
         }
+    }
+
+    public boolean isPlaying(){
+        return mediaPlayer.isPlaying();
     }
 
     @Override
@@ -129,14 +129,14 @@ public class MediaPlayerUtils implements MediaPlayer.OnBufferingUpdateListener, 
 
     public int getCurrentPosition() {
         if (state != State.RELEASE) {
-            return mediaPlayer.getCurrentPosition() / 1000;
+            return mediaPlayer.getCurrentPosition();
         } else {
             return 0;
         }
     }
 
     public int getDuration() {
-        return mediaPlayer.getDuration() / 1000;
+        return mediaPlayer.getDuration();
     }
 
     public void seekTo(int position) {
@@ -146,7 +146,7 @@ public class MediaPlayerUtils implements MediaPlayer.OnBufferingUpdateListener, 
                 || state == State.STOPPED
                 || state == State.PREPARED
                 || state == State.COMPLETED) {
-            mediaPlayer.seekTo(position * 1000);
+            mediaPlayer.seekTo(position);
         }
     }
 

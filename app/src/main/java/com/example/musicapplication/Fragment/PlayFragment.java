@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -17,24 +19,28 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.musicapplication.R;
 import com.example.musicapplication.entity.Music;
 import com.example.musicapplication.utils.MediaPlayerUtils;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Locale;
 
 public class PlayFragment extends Fragment implements View.OnClickListener, MediaPlayerUtils.onListener, SeekBar.OnSeekBarChangeListener {
     private TextView txtCurrentTime, txtTotalTime;
     private TextView txtPlaySongName, txtPlaySingerName;
     private ImageView imgPlayDisk, imgBack;
-    private ProgressBar sbMusicProgress;
+    private SeekBar sbMusicProgress;
     private ImageButton btnPreviousSong, btnNextSong, btnLoopSong, btnRandomSong, btnPlayMusic;
 
     private UpdateSeekBarRunnable updateSeekBarRunnable;
     private MediaPlayerUtils mediaPlayerUtils;
     private Handler handler;
     private Music music;
+
+    private Animation rotateAnim;
 
     private Bundle bundle;
 
@@ -62,26 +68,31 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
         super.onViewCreated(view, savedInstanceState);
         initComponent();
         iniEvent();
-        mediaPlayerUtils.setDataSource(getContext(), music.getSource());
+        mediaPlayerUtils.setDataSource(music.getSource());
+
     }
 
     private void initComponent() {
         mediaPlayerUtils = new MediaPlayerUtils(this);
+
         updateSeekBarRunnable = new UpdateSeekBarRunnable();
         handler = new Handler();
         bundle = getArguments();
         if (bundle != null)
             music = (Music) bundle.getSerializable("song_info");
+        rotateAnim = AnimationUtils.loadAnimation(getContext() ,R.anim.anim_rotate_disk);
+
     }
 
     private void iniEvent() {
         btnPlayMusic.setOnClickListener(this);
         imgBack.setOnClickListener(this);
+        sbMusicProgress.setOnSeekBarChangeListener(this);
     }
 
-    private String convertSecondsToTimeFormat(int seconds) {
+    private String convertSecondsToTimeFormat(int milliseconds) {
         SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.US);
-        return timeFormat.format(seconds);
+        return timeFormat.format(milliseconds);
     }
 
     @Override
@@ -89,11 +100,13 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
         int id = view.getId();
         if (id == R.id.btn_play_music) {
             if (mediaPlayerUtils.isPlaying()) {
-                btnPlayMusic.setImageResource(R.drawable.ic_outline_stop_circle_24);
-                mediaPlayerUtils.pause();
-            } else {
                 btnPlayMusic.setImageResource(R.drawable.ic_baseline_play_circle_outline_24);
+                mediaPlayerUtils.pause();
+                imgPlayDisk.clearAnimation();
+            } else {
+                btnPlayMusic.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24);
                 mediaPlayerUtils.start();
+                imgPlayDisk.startAnimation(rotateAnim);
             }
         } else if (id == R.id.img_back) {
             getParentFragmentManager().popBackStack();
@@ -141,20 +154,18 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
                 sbMusicProgress.setProgress(0);
                 sbMusicProgress.setSecondaryProgress(0);
 
-                txtTotalTime.setText(convertSecondsToTimeFormat(0));
-                txtCurrentTime.setText(convertSecondsToTimeFormat(0));
                 if (music != null) {
                     txtPlaySongName.setText(music.getSongName());
                     txtPlaySingerName.setText(music.getSinger());
+                    Glide.with(this).load(music.getImageMusic()).into(imgPlayDisk);
                 }
-
+                imgPlayDisk.startAnimation(rotateAnim);
                 enableButton(false);
 
                 break;
 
             case STARTED:
                 handler.post(updateSeekBarRunnable);
-
                 enableButton(true);
                 break;
 
@@ -166,7 +177,7 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
 
             case COMPLETED:
                 handler.removeCallbacks(updateSeekBarRunnable);
-
+                mediaPlayerUtils.start();
                 break;
             default:
                 break;
@@ -184,7 +195,6 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
 
     @Override
     public void updateBuffer(int percent) {
-        Log.i("PlayMusicFragment", "Buffer: " + percent);
         int max = sbMusicProgress.getMax();
         sbMusicProgress.setSecondaryProgress(percent * max / 100);
     }

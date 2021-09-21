@@ -20,7 +20,7 @@
             android:id="@+id/img_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_arrow_back_24"/>
+            android:src="@drawable/ic_baseline_arrow_downward_24"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_baseline_play_circle_outline_24"
+        android:src="@drawable/ic_baseline_pause_circle_outline_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_next_song"
         app:layout_constraintStart_toEndOf="@id/btn_previous_song" />
@@ -131,16 +131,17 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="10dp"/>
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img_play_disk"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:src="@drawable/music_player"
         android:background="@android:color/transparent"
         android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_play_song"
         app:layout_constraintBottom_toTopOf="@id/txt_current_time"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="50dp"/>
+        android:layout_margin="50dp"
+        app:shapeAppearanceOverlay="@style/circleImageView"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
