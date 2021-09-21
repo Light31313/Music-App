@@ -26,10 +26,12 @@ public class MusicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private final MusicFragment musicFragment;
     private final List<Music> musicList;
+    private final IMusicAdapter iMusicAdapter;
 
     public MusicAdapter(MusicFragment musicFragment, List<Music> musicList) {
         this.musicFragment = musicFragment;
         this.musicList = musicList;
+        this.iMusicAdapter = musicFragment;
     }
 
     private static class MusicViewHolder extends RecyclerView.ViewHolder{
@@ -60,14 +62,7 @@ public class MusicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         musicViewHolder.singer.setText(music.getSinger());
         Glide.with(musicFragment).load(music.getImageMusic()).into(musicViewHolder.imgMusic);
         musicViewHolder.clMusic.setOnClickListener(view -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("song_info", music);
-            musicFragment.getParentFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .setCustomAnimations(R.anim.anim_move_up, R.anim.anim_move_down, R.anim.anim_move_up, R.anim.anim_move_down)
-                    .add(R.id.fv_play_music, PlayFragment.class, bundle)
-                    .addToBackStack(null)
-                    .commit();
+            iMusicAdapter.chooseMusic(position);
         });
 
     }
@@ -76,4 +71,5 @@ public class MusicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public int getItemCount() {
         return musicList.size();
     }
+
 }
