@@ -26,7 +26,6 @@
             android:exported="true">
         </activity>
         <receiver android:name=".service.MediaActionReceiver" />
-        <service android:name=".service.ForegroundService"/>
     </application>
 
 </manifest>

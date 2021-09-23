@@ -2,34 +2,24 @@ package com.example.musicapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 
 import com.example.musicapplication.Fragment.FavoriteFragment;
 import com.example.musicapplication.Fragment.MusicFragment;
-import com.example.musicapplication.callback.IBottomNavigation;
-import com.example.musicapplication.service.ForegroundService;
 import com.example.musicapplication.viewmodel.MainFragmentViewModel;
-import com.example.musicapplication.viewmodel.MusicViewModel;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener{
     private BottomNavigationView bottomNavigation;
-    private BadgeDrawable badgeDrawable;
     private Bundle bundle;
-    private MainFragmentViewModel viewModel;
 
 
     @Override
@@ -48,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     private void initComponent() {
-        badgeDrawable = bottomNavigation.getOrCreateBadge(R.id.page_home);
+        BadgeDrawable badgeDrawable = bottomNavigation.getOrCreateBadge(R.id.page_home);
         //badgeDrawable.setVisible(false);
         badgeDrawable.setNumber(99);
 
@@ -59,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     private void initEvent() {
         bottomNavigation.setOnItemSelectedListener(this);
-        viewModel = new ViewModelProvider(this).get(MainFragmentViewModel.class);
+        MainFragmentViewModel viewModel = new ViewModelProvider(this).get(MainFragmentViewModel.class);
         viewModel.getVisible().observe(this, isVisible ->{
             if(isVisible){
                 bottomNavigation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_navigation_move_up));

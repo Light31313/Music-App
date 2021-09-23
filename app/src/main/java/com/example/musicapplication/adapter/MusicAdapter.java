@@ -1,21 +1,17 @@
 package com.example.musicapplication.adapter;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.util.AttributeSet;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.musicapplication.Fragment.MusicFragment;
-import com.example.musicapplication.Fragment.PlayFragment;
 import com.example.musicapplication.R;
 import com.example.musicapplication.entity.Music;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -61,9 +57,7 @@ public class MusicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         musicViewHolder.songName.setText(music.getSongName());
         musicViewHolder.singer.setText(music.getSinger());
         Glide.with(musicFragment).load(music.getImageMusic()).into(musicViewHolder.imgMusic);
-        musicViewHolder.clMusic.setOnClickListener(view -> {
-            iMusicAdapter.chooseMusic(position);
-        });
+        musicViewHolder.clMusic.setOnClickListener(view -> iMusicAdapter.chooseMusic(position));
 
     }
 
