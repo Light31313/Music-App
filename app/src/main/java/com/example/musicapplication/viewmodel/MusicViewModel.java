@@ -57,4 +57,14 @@ public class MusicViewModel extends ViewModel {
         return isClickable;
     }
 
+    private final MutableLiveData<Boolean> isReady = new MutableLiveData<>();
+
+    public void setReady(boolean isReady) {
+        this.isReady.setValue(isReady);
+    }
+
+    public LiveData<Boolean> getReady() {
+        return isReady;
+    }
+
 }

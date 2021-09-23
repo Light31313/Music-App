@@ -17,11 +17,13 @@
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/drawable/splash_background.xml" value="0.23703703703703705" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/activity_play_music.xml" value="0.25" />
-        <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/activity_splash_screen.xml" value="0.12708333333333333" />
+        <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/activity_splash_screen.xml" value="0.536" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/fragment_favorite.xml" value="0.25" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/fragment_music.xml" value="0.25" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/fragment_play.xml" value="0.25" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/item_music.xml" value="0.264" />
+        <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/layout_notification_custom_collapsed.xml" value="0.25" />
+        <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/layout/layout_notification_custom_expanded.xml" value="0.25" />
         <entry key="..\:/Android Studio/MusicApplication/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.25" />
       </map>
     </option>

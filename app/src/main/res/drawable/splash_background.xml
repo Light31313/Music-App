@@ -4,7 +4,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/music_player"
-            android:mipMap="true"/>
+            android:src="@drawable/logo_app"
+            android:mipMap="true" />
     </item>
 </layer-list>

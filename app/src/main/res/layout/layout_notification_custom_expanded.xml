@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/holo_purple"
+    android:maxHeight="64dp">
+
+    <ImageView
+        android:id="@+id/im_avatar_notification_music"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_baseline_home_24" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_toRightOf="@+id/im_avatar_notification_music">
+
+        <TextView
+            android:id="@+id/tv_title_video_notification_music"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:text="CHÍ TÀI- HARI WON SONG CA ANH CỨ ĐI ĐI- SIÊU BẤT NGỜ 2016"
+            android:textColor="@android:color/white"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_author_notification_music"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title_video_notification_music"
+            android:layout_marginTop="5dp"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="Hari Won"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/im_avatar_notification_music"
+        android:layout_marginTop="10dp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/im_prev_notification_music"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_skip_previous_24" />
+
+        <ImageView
+            android:id="@+id/im_play_notification_music"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_toRightOf="@+id/im_prev_notification_music"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_pause_24" />
+
+        <ImageView
+            android:id="@+id/im_next_notification_music"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_toRightOf="@+id/im_play_notification_music"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_skip_next_24" />
+    </RelativeLayout>
+
+</RelativeLayout>

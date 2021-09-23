@@ -19,9 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.example.musicapplication.MainActivity;
 import com.example.musicapplication.R;
-import com.example.musicapplication.callback.IBottomNavigation;
 import com.example.musicapplication.entity.Music;
 import com.example.musicapplication.utils.MediaPlayerUtils;
 import com.example.musicapplication.viewmodel.MainFragmentViewModel;
@@ -43,8 +41,6 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
     private Music music;
 
     private Animation rotateAnim;
-
-    private Bundle bundle;
 
     private int mode;
 
@@ -75,8 +71,7 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
         super.onViewCreated(view, savedInstanceState);
         initComponent();
         iniEvent();
-        mediaPlayerUtils.setDataSource(music.getSource());
-
+        viewModel.setReady(true);
     }
 
     private void initComponent() {
@@ -86,11 +81,8 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
         mode = Mode.NORMAL;
         updateSeekBarRunnable = new UpdateSeekBarRunnable();
         handler = new Handler();
-        bundle = getArguments();
-        if (bundle != null)
-            music = (Music) bundle.getSerializable("song_info");
-        rotateAnim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_rotate_disk);
         mainFragmentViewModel.setVisible(false);
+        rotateAnim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_rotate_disk);
     }
 
     private void iniEvent() {
@@ -104,10 +96,9 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
 
         // Receive music object from MusicFragment
         viewModel.getMusic().observe(getViewLifecycleOwner(), receivedMusic -> {
-            mediaPlayerUtils.release();
-            mediaPlayerUtils = new MediaPlayerUtils(this);
-            music = receivedMusic;
-            mediaPlayerUtils.setDataSource(music.getSource());
+                mediaPlayerUtils.reset();
+                music = receivedMusic;
+                mediaPlayerUtils.setDataSource(music.getSource());
         });
     }
 
@@ -121,16 +112,15 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
         int id = view.getId();
         if (id == R.id.btn_play_music) {
             if (mediaPlayerUtils.isPlaying()) {
-                btnPlayMusic.setImageResource(R.drawable.ic_baseline_play_circle_outline_24);
                 mediaPlayerUtils.pause();
             } else {
-                btnPlayMusic.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24);
                 mediaPlayerUtils.start();
             }
         } else if (id == R.id.img_back) {
             getParentFragmentManager().popBackStack();
             mainFragmentViewModel.setVisible(true);
             viewModel.setClickable(false);
+            mediaPlayerUtils.release();
         } else if (id == R.id.btn_previous_song) {
             viewModel.setPrevious(true);
         } else if (id == R.id.btn_next_song) {
@@ -174,6 +164,11 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
 
     }
 
+    @Override
+    public void onError() {
+        Toast.makeText(getActivity(), "Cannot open media", Toast.LENGTH_SHORT).show();
+    }
+
     public void setupSong(Music music) {
         if (music != null) {
             txtPlaySongName.setText(music.getSongName());
@@ -183,49 +178,49 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
     }
 
     @Override
-    public void onError() {
-        Toast.makeText(getActivity(), "Cannot open media", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void changeState(MediaPlayerUtils.State state) {
         switch (state) {
-            case INITIALIZED:
             case ERROR:
+            case INITIALIZED:
+                imgPlayDisk.clearAnimation();
                 sbMusicProgress.setProgress(0);
                 sbMusicProgress.setSecondaryProgress(0);
-
+                txtCurrentTime.setText(R.string.time);
+                txtTotalTime.setText(R.string.time);
                 setupSong(music);
-
                 enableButton(false);
-
                 break;
-
+            case PREPARED:
+                enableButton(true);
+                break;
             case STARTED:
                 imgPlayDisk.startAnimation(rotateAnim);
+                btnPlayMusic.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24);
                 handler.post(updateSeekBarRunnable);
-                enableButton(true);
                 break;
 
             case PAUSED:
                 imgPlayDisk.clearAnimation();
+                btnPlayMusic.setImageResource(R.drawable.ic_baseline_play_circle_outline_24);
                 handler.removeCallbacks(updateSeekBarRunnable);
-                enableButton(true);
                 break;
 
             case COMPLETED:
                 handler.removeCallbacks(updateSeekBarRunnable);
                 if (mode == Mode.NORMAL) {
                     viewModel.setNext(true);
-                } else if (mode == Mode.LOOP)
+                } else if (mode == Mode.LOOP) {
                     mediaPlayerUtils.start();
-                else if (mode == Mode.RANDOM) {
+                } else if (mode == Mode.RANDOM) {
                     viewModel.setRandom(true);
                 }
                 break;
+
+            case RELEASE:
+                handler.removeCallbacks(updateSeekBarRunnable);
+                break;
             default:
                 break;
-
         }
     }
 
@@ -254,9 +249,10 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
         @Override
         public void run() {
             int currentPosition = mediaPlayerUtils.getCurrentPosition(); // seconds
-            sbMusicProgress.setProgress(currentPosition);
-            txtCurrentTime.setText(convertSecondsToTimeFormat(currentPosition));
-
+            if (currentPosition <= mediaPlayerUtils.getDuration()) {
+                sbMusicProgress.setProgress(currentPosition);
+                txtCurrentTime.setText(convertSecondsToTimeFormat(currentPosition));
+            }
             handler.postDelayed(this, 1000);
         }
     }

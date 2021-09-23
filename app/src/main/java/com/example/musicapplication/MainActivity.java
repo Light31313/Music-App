@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import com.example.musicapplication.Fragment.FavoriteFragment;
 import com.example.musicapplication.Fragment.MusicFragment;
 import com.example.musicapplication.callback.IBottomNavigation;
+import com.example.musicapplication.service.ForegroundService;
 import com.example.musicapplication.viewmodel.MainFragmentViewModel;
 import com.example.musicapplication.viewmodel.MusicViewModel;
 import com.google.android.material.badge.BadgeDrawable;
@@ -26,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     private BadgeDrawable badgeDrawable;
     private Bundle bundle;
     private MainFragmentViewModel viewModel;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         initView();
         initComponent();
         initEvent();
+
     }
 
     private void initView() {
@@ -55,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         viewModel = new ViewModelProvider(this).get(MainFragmentViewModel.class);
         viewModel.getVisible().observe(this, isVisible ->{
             if(isVisible){
-                bottomNavigation.setVisibility(View.VISIBLE);
                 bottomNavigation.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_navigation_move_up));
+                bottomNavigation.setVisibility(View.VISIBLE);
             }
             else {
                 bottomNavigation.setVisibility(View.GONE);
@@ -85,4 +92,5 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         }
         return false;
     }
+
 }

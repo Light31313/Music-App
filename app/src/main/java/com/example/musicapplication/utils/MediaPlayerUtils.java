@@ -4,17 +4,13 @@ import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
-
-import androidx.annotation.IdRes;
-import androidx.annotation.RawRes;
-
 import java.io.IOException;
 
 public class MediaPlayerUtils implements MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnSeekCompleteListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
 
     private MediaPlayer mediaPlayer;
     private State state;
-    private onListener listener;
+    private final onListener listener;
 
     public MediaPlayerUtils(onListener listener) {
         this.listener = listener;
@@ -63,8 +59,10 @@ public class MediaPlayerUtils implements MediaPlayer.OnBufferingUpdateListener, 
         }
     }
 
-    public boolean isPlaying(){
-        return mediaPlayer.isPlaying();
+    public boolean isPlaying() {
+        if (state != State.ERROR)
+            return mediaPlayer.isPlaying();
+        return false;
     }
 
     @Override
@@ -83,8 +81,10 @@ public class MediaPlayerUtils implements MediaPlayer.OnBufferingUpdateListener, 
     }
 
     private void prepareAsync() {
-        mediaPlayer.prepareAsync();
-        setState(State.PREPARING);
+        if (state == State.INITIALIZED || state == State.STOPPED) {
+            mediaPlayer.prepareAsync();
+            setState(State.PREPARING);
+        }
     }
 
     @Override
@@ -127,6 +127,7 @@ public class MediaPlayerUtils implements MediaPlayer.OnBufferingUpdateListener, 
         mediaPlayer.reset();
     }
 
+
     public int getCurrentPosition() {
         if (state != State.RELEASE) {
             return mediaPlayer.getCurrentPosition();
@@ -136,16 +137,18 @@ public class MediaPlayerUtils implements MediaPlayer.OnBufferingUpdateListener, 
     }
 
     public int getDuration() {
-        return mediaPlayer.getDuration();
+        if (state != State.IDLE && state != State.INITIALIZED && state != State.ERROR && state != State.PREPARING && state!= State.RELEASE) {
+            return mediaPlayer.getDuration();
+        }
+        return 0;
     }
 
     public void seekTo(int position) {
-        if (position <= getDuration()
-                || state == State.STARTED
+        if ((position <= getDuration()) && (state == State.STARTED
                 || state == State.PAUSED
                 || state == State.STOPPED
                 || state == State.PREPARED
-                || state == State.COMPLETED) {
+                || state == State.COMPLETED)) {
             mediaPlayer.seekTo(position);
         }
     }
@@ -210,6 +213,6 @@ public class MediaPlayerUtils implements MediaPlayer.OnBufferingUpdateListener, 
         STOPPED,
         COMPLETED,
         RELEASE,
-        ERROR;
+        ERROR
     }
 }
