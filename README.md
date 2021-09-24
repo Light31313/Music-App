@@ -1,3 +1,3 @@
 # Music-App
-An beginner music app for android developer\n
+An beginner music app for android developer.
 Soucre code in master branch
