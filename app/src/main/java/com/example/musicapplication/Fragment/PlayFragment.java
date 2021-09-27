@@ -17,16 +17,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.bumptech.glide.Glide;
 import com.example.musicapplication.R;
+import com.example.musicapplication.databinding.FragmentPlayBinding;
 import com.example.musicapplication.entity.Music;
 import com.example.musicapplication.service.CreateNotification;
 import com.example.musicapplication.service.OnClearFromRecentService;
@@ -34,12 +33,8 @@ import com.example.musicapplication.utils.MediaPlayerUtils;
 import com.example.musicapplication.viewmodel.MainFragmentViewModel;
 import com.example.musicapplication.viewmodel.MusicViewModel;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 public class PlayFragment extends Fragment implements View.OnClickListener, MediaPlayerUtils.onListener, SeekBar.OnSeekBarChangeListener, Playable {
-    private TextView txtCurrentTime, txtTotalTime;
-    private TextView txtPlaySongName, txtPlaySingerName;
     private ImageView imgPlayDisk, imgBack;
     private SeekBar sbMusicProgress;
     private ImageButton btnPreviousSong, btnNextSong, btnLoopSong, btnRandomSong, btnPlayMusic;
@@ -55,8 +50,9 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
 
     private MusicViewModel viewModel;
     private MainFragmentViewModel mainFragmentViewModel;
-
     private NotificationManager notificationManager;
+    private ConstraintLayout llPlay;
+    private FragmentPlayBinding binding;
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -68,11 +64,7 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
                     onMusicPrevious();
                     break;
                 case CreateNotification.ACTION_PLAY:
-                    if (mediaPlayerUtils.isPlaying()) {
-                        onMusicPause();
-                    } else {
-                        onMusicPlay();
-                    }
+                    viewModel.setPlay(!mediaPlayerUtils.isPlaying());
                     break;
                 case CreateNotification.ACTION_NEXT:
                     onMusicNext();
@@ -84,19 +76,17 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_play, container, false);
-        txtCurrentTime = view.findViewById(R.id.txt_current_time);
-        txtTotalTime = view.findViewById(R.id.txt_total_time);
-        imgPlayDisk = view.findViewById(R.id.img_play_disk);
-        sbMusicProgress = view.findViewById(R.id.sb_music_progress);
-        btnPreviousSong = view.findViewById(R.id.btn_previous_song);
-        btnNextSong = view.findViewById(R.id.btn_next_song);
-        btnLoopSong = view.findViewById(R.id.btn_loop_song);
-        btnRandomSong = view.findViewById(R.id.btn_random_song);
-        btnPlayMusic = view.findViewById(R.id.btn_play_music);
-        imgBack = view.findViewById(R.id.img_back);
-        txtPlaySingerName = view.findViewById(R.id.txt_play_singer_name);
-        txtPlaySongName = view.findViewById(R.id.txt_play_song_name);
+        binding = FragmentPlayBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        imgPlayDisk = binding.imgPlayDisk;
+        sbMusicProgress = binding.sbMusicProgress;
+        btnPreviousSong = binding.btnPreviousSong;
+        btnNextSong = binding.btnNextSong;
+        btnLoopSong = binding.btnLoopSong;
+        btnRandomSong = binding.btnRandomSong;
+        btnPlayMusic = binding.btnPlayMusic;
+        imgBack = binding.imgBack;
+        llPlay = binding.llPlay;
         return view;
     }
 
@@ -116,7 +106,7 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
     }
 
     private void initComponent() {
-        viewModel = new ViewModelProvider(requireParentFragment()).get(MusicViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(MusicViewModel.class);
         mainFragmentViewModel = new ViewModelProvider(requireActivity()).get(MainFragmentViewModel.class);
         mediaPlayerUtils = new MediaPlayerUtils(this);
         mode = Mode.NORMAL;
@@ -124,6 +114,8 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
         handler = new Handler();
         mainFragmentViewModel.setVisible(false);
         rotateAnim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_rotate_disk);
+        llPlay.setClickable(true);
+        llPlay.setFocusable(true);
     }
 
     private void iniEvent() {
@@ -140,13 +132,31 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
             mediaPlayerUtils.reset();
             music = receivedMusic;
             mediaPlayerUtils.setDataSource(music.getSource());
+            binding.setMusic(music);
+        });
+        viewModel.getShowCollapse().observe(getViewLifecycleOwner(), showCollapse -> {
+            if (showCollapse) {
+                llPlay.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_move_down));
+                getParentFragmentManager().beginTransaction().hide(this).commit();
+                mainFragmentViewModel.setVisible(true);
+            } else {
+                getParentFragmentManager().beginTransaction().show(this).commit();
+                llPlay.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_move_up));
+                mainFragmentViewModel.setVisible(false);
+            }
+        });
+        viewModel.getPlay().observe(getViewLifecycleOwner(), isPlay -> {
+            if (isPlay)
+                onMusicPlay();
+            else
+                onMusicPause();
         });
     }
 
     private void createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CreateNotification.CHANNEL_ID,
-                    "KOD Dev", NotificationManager.IMPORTANCE_LOW);
+                    "Giang Dev", NotificationManager.IMPORTANCE_LOW);
 
             notificationManager = getActivity().getSystemService(NotificationManager.class);
             if (notificationManager != null) {
@@ -155,25 +165,13 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
         }
     }
 
-    private String convertSecondsToTimeFormat(int milliseconds) {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.US);
-        return timeFormat.format(milliseconds);
-    }
-
     @Override
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.btn_play_music) {
-            if (mediaPlayerUtils.isPlaying()) {
-                onMusicPause();
-            } else {
-                onMusicPlay();
-            }
+            viewModel.setPlay(!mediaPlayerUtils.isPlaying());
         } else if (id == R.id.img_back) {
-            getParentFragmentManager().popBackStack();
-            mainFragmentViewModel.setVisible(true);
-            viewModel.setClickable(false);
-            mediaPlayerUtils.release();
+            viewModel.setShowCollapse(true);
         } else if (id == R.id.btn_previous_song) {
             onMusicPrevious();
         } else if (id == R.id.btn_next_song) {
@@ -222,13 +220,6 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
         Toast.makeText(getActivity(), "Cannot open media", Toast.LENGTH_SHORT).show();
     }
 
-    public void setupSong(Music music) {
-        if (music != null) {
-            txtPlaySongName.setText(music.getSongName());
-            txtPlaySingerName.setText(music.getSinger());
-            Glide.with(this).load(music.getImageMusic()).into(imgPlayDisk);
-        }
-    }
 
     @Override
     public void changeState(MediaPlayerUtils.State state) {
@@ -238,9 +229,8 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
                 imgPlayDisk.clearAnimation();
                 sbMusicProgress.setProgress(0);
                 sbMusicProgress.setSecondaryProgress(0);
-                txtCurrentTime.setText(R.string.time);
-                txtTotalTime.setText(R.string.time);
-                setupSong(music);
+                binding.setTotalTime(0);
+                binding.setCurrentTime(0);
                 enableButton(false);
                 break;
             case PREPARED:
@@ -293,8 +283,7 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
 
     @Override
     public void onPrepared(int duration) {
-        sbMusicProgress.setMax(duration);
-        txtTotalTime.setText(convertSecondsToTimeFormat(duration));
+        binding.setTotalTime(duration);
     }
 
     @Override
@@ -327,8 +316,7 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
         public void run() {
             int currentPosition = mediaPlayerUtils.getCurrentPosition(); // seconds
             if (currentPosition <= mediaPlayerUtils.getDuration()) {
-                sbMusicProgress.setProgress(currentPosition);
-                txtCurrentTime.setText(convertSecondsToTimeFormat(currentPosition));
+                binding.setCurrentTime(currentPosition);
             }
             handler.postDelayed(this, 1000);
         }

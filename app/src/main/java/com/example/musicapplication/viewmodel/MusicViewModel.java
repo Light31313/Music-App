@@ -47,16 +47,6 @@ public class MusicViewModel extends ViewModel {
         return isRandom;
     }
 
-    private final MutableLiveData<Boolean> isClickable = new MutableLiveData<>();
-
-    public void setClickable(boolean isClickable) {
-        this.isClickable.setValue(isClickable);
-    }
-
-    public LiveData<Boolean> getClickable() {
-        return isClickable;
-    }
-
     private final MutableLiveData<Boolean> isReady = new MutableLiveData<>();
 
     public void setReady(boolean isReady) {
@@ -67,4 +57,23 @@ public class MusicViewModel extends ViewModel {
         return isReady;
     }
 
+    private final MutableLiveData<Boolean> showCollapse = new MutableLiveData<>();
+
+    public void setShowCollapse(boolean showCollapse) {
+        this.showCollapse.setValue(showCollapse);
+    }
+
+    public LiveData<Boolean> getShowCollapse() {
+        return showCollapse;
+    }
+
+    private final MutableLiveData<Boolean> isPlay = new MutableLiveData<>();
+
+    public void setPlay(boolean isPlay) {
+        this.isPlay.setValue(isPlay);
+    }
+
+    public LiveData<Boolean> getPlay() {
+        return isPlay;
+    }
 }

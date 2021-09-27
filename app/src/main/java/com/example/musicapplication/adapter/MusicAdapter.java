@@ -1,6 +1,7 @@
 package com.example.musicapplication.adapter;
 
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.musicapplication.Fragment.MusicFragment;
 import com.example.musicapplication.R;
+import com.example.musicapplication.databinding.ItemMusicBinding;
 import com.example.musicapplication.entity.Music;
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -20,14 +22,14 @@ import java.util.List;
 
 public class MusicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MusicFragment musicFragment;
+    private final Context context;
     private final List<Music> musicList;
     private final IMusicAdapter iMusicAdapter;
 
-    public MusicAdapter(MusicFragment musicFragment, List<Music> musicList) {
-        this.musicFragment = musicFragment;
+    public MusicAdapter(Context context, IMusicAdapter iMusicAdapter, List<Music> musicList) {
+        this.context = context;
         this.musicList = musicList;
-        this.iMusicAdapter = musicFragment;
+        this.iMusicAdapter = iMusicAdapter;
     }
 
     private static class MusicViewHolder extends RecyclerView.ViewHolder{
@@ -56,7 +58,7 @@ public class MusicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         MusicViewHolder musicViewHolder = (MusicViewHolder) holder;
         musicViewHolder.songName.setText(music.getSongName());
         musicViewHolder.singer.setText(music.getSinger());
-        Glide.with(musicFragment).load(music.getImageMusic()).into(musicViewHolder.imgMusic);
+        Glide.with(context).load(music.getImageMusic()).into(musicViewHolder.imgMusic);
         musicViewHolder.clMusic.setOnClickListener(view -> iMusicAdapter.chooseMusic(position));
 
     }

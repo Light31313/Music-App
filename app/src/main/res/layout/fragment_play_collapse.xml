@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="com.example.musicapplication.entity.Music"/>
+        <variable
+            name="music"
+            type="Music" />
+    </data>
+    <LinearLayout
+        android:id="@+id/ll_play_collapse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/play_music_background"
+        android:gravity="center_vertical"
+        android:weightSum="10">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_collapse"
+            android:layout_width="24dp"
+            android:layout_height="48dp"
+            android:layout_marginVertical="8dp"
+            android:layout_weight="1"
+            android:src="@drawable/logo_app"
+            app:shapeAppearanceOverlay="@style/circleImageView"
+            imageUrl="@{music.imageMusic}"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="7"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_song_name_collapse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{music.songName}"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txt_singer_collapse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{music.singer}"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_collapse_play"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_baseline_pause_24" />
+
+        <ImageButton
+            android:id="@+id/btn_collapse_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_baseline_skip_next_24" />
+
+    </LinearLayout>
+
+</layout>

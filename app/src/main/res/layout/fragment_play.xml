@@ -1,147 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/play_music_background">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tb_play_song"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:minHeight="?android:attr/actionBarSize"
-        android:background="#080D3A"
-        app:theme="@style/Theme.AppCompat.Light"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-        <ImageView
-            android:id="@+id/img_back"
-            android:layout_width="wrap_content"
+    <data>
+
+        <import type="com.example.musicapplication.entity.Music" />
+        <import type="com.example.musicapplication.utils.MediaPlayerUtils"/>
+        <variable
+            name="music"
+            type="Music" />
+        <variable
+            name="currentTime"
+            type="int" />
+        <variable
+            name="totalTime"
+            type="int" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/play_music_background"
+        android:id="@+id/ll_play">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_play_song"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_arrow_downward_24"/>
+            android:background="#080D3A"
+            android:minHeight="?android:attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:theme="@style/Theme.AppCompat.Light">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_arrow_downward_24" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="30dp">
+                android:layout_marginStart="30dp"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/txt_play_song_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/song_name"
+                    android:text="@{music.songName}"
                     android:textColor="@color/white"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
+
                 <TextView
                     android:id="@+id/txt_play_singer_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/singer"
-                    android:textColor="@color/white"/>
+                    android:text="@{music.singer}"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
 
-    </androidx.appcompat.widget.Toolbar>
-    <ImageButton
-        android:id="@+id/btn_play_music"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_baseline_pause_circle_outline_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_next_song"
-        app:layout_constraintStart_toEndOf="@id/btn_previous_song" />
+        </androidx.appcompat.widget.Toolbar>
 
-    <ImageButton
-        android:id="@+id/btn_next_song"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_baseline_skip_next_24"
-        app:layout_constraintBottom_toBottomOf="@id/btn_play_music"
-        app:layout_constraintEnd_toStartOf="@id/btn_loop_song"
-        app:layout_constraintStart_toEndOf="@id/btn_play_music"
-        app:layout_constraintTop_toTopOf="@id/btn_play_music" />
+        <ImageButton
+            android:id="@+id/btn_play_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_baseline_pause_circle_outline_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_next_song"
+            app:layout_constraintStart_toEndOf="@id/btn_previous_song" />
 
-    <ImageButton
-        android:id="@+id/btn_previous_song"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_baseline_skip_previous_24"
-        app:layout_constraintBottom_toBottomOf="@id/btn_play_music"
-        app:layout_constraintEnd_toStartOf="@id/btn_play_music"
-        app:layout_constraintStart_toEndOf="@id/btn_random_song"
-        app:layout_constraintTop_toTopOf="@id/btn_play_music" />
+        <ImageButton
+            android:id="@+id/btn_next_song"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_baseline_skip_next_24"
+            app:layout_constraintBottom_toBottomOf="@id/btn_play_music"
+            app:layout_constraintEnd_toStartOf="@id/btn_loop_song"
+            app:layout_constraintStart_toEndOf="@id/btn_play_music"
+            app:layout_constraintTop_toTopOf="@id/btn_play_music" />
 
-    <ImageButton
-        android:id="@+id/btn_random_song"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_baseline_swap_calls_24"
-        app:layout_constraintBottom_toBottomOf="@id/btn_play_music"
-        app:layout_constraintEnd_toStartOf="@id/btn_previous_song"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btn_play_music" />
+        <ImageButton
+            android:id="@+id/btn_previous_song"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_baseline_skip_previous_24"
+            app:layout_constraintBottom_toBottomOf="@id/btn_play_music"
+            app:layout_constraintEnd_toStartOf="@id/btn_play_music"
+            app:layout_constraintStart_toEndOf="@id/btn_random_song"
+            app:layout_constraintTop_toTopOf="@id/btn_play_music" />
 
-    <ImageButton
-        android:id="@+id/btn_loop_song"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_baseline_loop_24"
-        app:layout_constraintBottom_toBottomOf="@id/btn_play_music"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn_next_song"
-        app:layout_constraintTop_toTopOf="@id/btn_play_music" />
+        <ImageButton
+            android:id="@+id/btn_random_song"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_baseline_swap_calls_24"
+            app:layout_constraintBottom_toBottomOf="@id/btn_play_music"
+            app:layout_constraintEnd_toStartOf="@id/btn_previous_song"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_play_music" />
 
-    <SeekBar
-        android:id="@+id/sb_music_progress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:progressBackgroundTint="@color/white"
-        app:layout_constraintBottom_toTopOf="@id/btn_play_music"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:progress="80"
-        android:progressTint="@color/purple_500"
-        android:layout_marginBottom="10dp"
-        android:layout_marginHorizontal="20dp"
-        android:thumbTint="@color/white" />
-    <TextView
-        android:id="@+id/txt_current_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/time"
-        app:layout_constraintBottom_toTopOf="@id/sb_music_progress"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="10dp"/>
-    <TextView
-        android:id="@+id/txt_total_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/time"
-        app:layout_constraintBottom_toTopOf="@id/sb_music_progress"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="10dp"/>
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/img_play_disk"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:src="@drawable/music_player"
-        android:background="@android:color/transparent"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toBottomOf="@id/tb_play_song"
-        app:layout_constraintBottom_toTopOf="@id/txt_current_time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="50dp"
-        app:shapeAppearanceOverlay="@style/circleImageView"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/btn_loop_song"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_baseline_loop_24"
+            app:layout_constraintBottom_toBottomOf="@id/btn_play_music"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_next_song"
+            app:layout_constraintTop_toTopOf="@id/btn_play_music" />
+
+        <SeekBar
+            android:id="@+id/sb_music_progress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="10dp"
+            android:progressBackgroundTint="@color/white"
+            android:progressTint="@color/purple_500"
+            android:thumbTint="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/btn_play_music"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:progress="@{currentTime}"
+            android:max="@{totalTime}"/>
+
+        <TextView
+            android:id="@+id/txt_current_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@{MediaPlayerUtils.convertSecondsToTimeFormat(currentTime)}"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/sb_music_progress"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_total_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="@{MediaPlayerUtils.convertSecondsToTimeFormat(totalTime)}"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/sb_music_progress"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_play_disk"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_margin="50dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/music_player"
+            app:layout_constraintBottom_toTopOf="@id/txt_current_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tb_play_song"
+            app:shapeAppearanceOverlay="@style/circleImageView"
+            app:imageUrl="@{music.imageMusic}"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

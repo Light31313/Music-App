@@ -5,6 +5,8 @@ import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class MediaPlayerUtils implements MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnSeekCompleteListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
 
@@ -214,5 +216,9 @@ public class MediaPlayerUtils implements MediaPlayer.OnBufferingUpdateListener, 
         COMPLETED,
         RELEASE,
         ERROR
+    }
+    public static String convertSecondsToTimeFormat(int milliseconds) {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.US);
+        return timeFormat.format(milliseconds);
     }
 }

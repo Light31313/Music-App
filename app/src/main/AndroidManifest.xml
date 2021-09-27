@@ -24,8 +24,10 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
+
         </activity>
         <receiver android:name=".service.MediaActionReceiver" />
+        <service android:name=".service.OnClearFromRecentService"/>
     </application>
 
 </manifest>

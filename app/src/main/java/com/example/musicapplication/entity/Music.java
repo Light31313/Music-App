@@ -1,8 +1,13 @@
 package com.example.musicapplication.entity;
 
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+
+import com.example.musicapplication.BR;
+
 import java.io.Serializable;
 
-public class Music implements Serializable {
+public class Music extends BaseObservable implements Serializable {
     private int id;
     private String imageMusic;
     private String songName;

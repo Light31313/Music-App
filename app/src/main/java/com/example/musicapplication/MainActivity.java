@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 
 import com.example.musicapplication.Fragment.FavoriteFragment;
 import com.example.musicapplication.Fragment.MusicFragment;
+import com.example.musicapplication.databinding.ActivityMainBinding;
 import com.example.musicapplication.viewmodel.MainFragmentViewModel;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,13 +21,14 @@ import com.google.android.material.navigation.NavigationBarView;
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener{
     private BottomNavigationView bottomNavigation;
     private Bundle bundle;
-
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         initView();
         initComponent();
         initEvent();
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     private void initView() {
-        bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation = binding.bottomNavigation;
     }
 
     private void initComponent() {
