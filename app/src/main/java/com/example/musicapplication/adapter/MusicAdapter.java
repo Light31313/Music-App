@@ -12,9 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.musicapplication.Fragment.MusicFragment;
 import com.example.musicapplication.R;
-import com.example.musicapplication.databinding.ItemMusicBinding;
 import com.example.musicapplication.entity.Music;
 import com.google.android.material.imageview.ShapeableImageView;
 

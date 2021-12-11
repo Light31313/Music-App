@@ -6,4 +6,11 @@
     <string name="song_name">song name</string>
     <string name="singer">singer</string>
     <string name="time">00:00</string>
+    <string name="insert_song">Insert Song</string>
+    <string name="delete_song">Delete Song</string>
+    <string name="update_song">Update Song</string>
+    <string name="enter_song_name">Enter Song Name</string>
+    <string name="enter_source">Enter Source</string>
+    <string name="enter_singer">Enter Singer</string>
+    <string name="enter_image_url">Enter Image Url</string>
 </resources>

@@ -6,15 +6,16 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.example.musicapplication.Fragment.FavoriteFragment;
 import com.example.musicapplication.Fragment.MusicFragment;
 import com.example.musicapplication.databinding.ActivityMainBinding;
 import com.example.musicapplication.viewmodel.MainFragmentViewModel;
-import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -26,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
@@ -36,13 +36,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     private void initView() {
+        setSupportActionBar(binding.tbMenu);
         bottomNavigation = binding.bottomNavigation;
     }
 
     private void initComponent() {
-        BadgeDrawable badgeDrawable = bottomNavigation.getOrCreateBadge(R.id.page_home);
-        //badgeDrawable.setVisible(false);
-        badgeDrawable.setNumber(99);
+
 
         Intent intent = getIntent();
         bundle = intent.getBundleExtra("bundle");
@@ -84,5 +83,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         }
         return false;
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.crud_menu, menu);
+        return true;
+    }
+
 
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/insert_song"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/edt_song_name"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:hint="@string/enter_song_name" />
+
+    <EditText
+        android:id="@+id/edt_image_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_image_url"
+        android:layout_marginHorizontal="24dp"/>
+
+    <EditText
+        android:id="@+id/edt_singer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_singer"
+        android:layout_marginHorizontal="24dp"/>
+
+    <EditText
+        android:id="@+id/edt_source"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_source"
+        android:layout_marginHorizontal="24dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_insert_song"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="@string/insert_song"
+        android:layout_marginHorizontal="24dp"/>
+</LinearLayout>

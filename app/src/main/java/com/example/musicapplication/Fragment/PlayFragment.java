@@ -1,12 +1,6 @@
 package com.example.musicapplication.Fragment;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -27,8 +21,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.musicapplication.R;
 import com.example.musicapplication.databinding.FragmentPlayBinding;
 import com.example.musicapplication.entity.Music;
-import com.example.musicapplication.service.CreateNotification;
-import com.example.musicapplication.service.OnClearFromRecentService;
 import com.example.musicapplication.utils.MediaPlayerUtils;
 import com.example.musicapplication.viewmodel.MainFragmentViewModel;
 import com.example.musicapplication.viewmodel.MusicViewModel;
@@ -50,28 +42,11 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
 
     private MusicViewModel viewModel;
     private MainFragmentViewModel mainFragmentViewModel;
-    private NotificationManager notificationManager;
+
     private ConstraintLayout llPlay;
     private FragmentPlayBinding binding;
 
-    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getExtras().getString("actionname");
 
-            switch (action) {
-                case CreateNotification.ACTION_PREVIOUS:
-                    onMusicPrevious();
-                    break;
-                case CreateNotification.ACTION_PLAY:
-                    viewModel.setPlay(!mediaPlayerUtils.isPlaying());
-                    break;
-                case CreateNotification.ACTION_NEXT:
-                    onMusicNext();
-                    break;
-            }
-        }
-    };
 
     @Nullable
     @Override
@@ -96,12 +71,6 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
         initComponent();
         iniEvent();
 
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannel();
-            getActivity().registerReceiver(broadcastReceiver, new IntentFilter("TRACKS_TRACKS"));
-            getActivity().startService(new Intent(getActivity().getBaseContext(), OnClearFromRecentService.class));
-        }
         viewModel.setReady(true);
     }
 
@@ -153,17 +122,7 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
         });
     }
 
-    private void createChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CreateNotification.CHANNEL_ID,
-                    "Giang Dev", NotificationManager.IMPORTANCE_LOW);
 
-            notificationManager = getActivity().getSystemService(NotificationManager.class);
-            if (notificationManager != null) {
-                notificationManager.createNotificationChannel(channel);
-            }
-        }
-    }
 
     @Override
     public void onClick(View view) {
@@ -289,25 +248,23 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
     @Override
     public void onMusicPrevious() {
         viewModel.setPrevious(true);
-        CreateNotification.updateNotification(music, R.drawable.ic_baseline_pause_circle_outline_24);
+
     }
 
     @Override
     public void onMusicPlay() {
         mediaPlayerUtils.start();
-        CreateNotification.updateNotification(music, R.drawable.ic_baseline_pause_circle_outline_24);
+
     }
 
     @Override
     public void onMusicPause() {
         mediaPlayerUtils.pause();
-        CreateNotification.updateNotification(music, R.drawable.ic_baseline_play_circle_outline_24);
     }
 
     @Override
     public void onMusicNext() {
         viewModel.setNext(true);
-        CreateNotification.updateNotification(music, R.drawable.ic_baseline_pause_circle_outline_24);
     }
 
     private class UpdateSeekBarRunnable implements Runnable {
@@ -324,11 +281,7 @@ public class PlayFragment extends Fragment implements View.OnClickListener, Medi
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         mediaPlayerUtils.release();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationManager.cancelAll();
-        }
-        getActivity().unregisterReceiver(broadcastReceiver);
+        super.onDestroy();
     }
 }

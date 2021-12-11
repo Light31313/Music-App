@@ -20,8 +20,8 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
-    <style name="roundRectangleImageView" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">5%</item>
+    <style name="Theme.MusicApplication.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>

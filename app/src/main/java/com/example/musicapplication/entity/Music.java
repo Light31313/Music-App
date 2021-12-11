@@ -1,9 +1,7 @@
 package com.example.musicapplication.entity;
 
 import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 
-import com.example.musicapplication.BR;
 
 import java.io.Serializable;
 
@@ -16,6 +14,13 @@ public class Music extends BaseObservable implements Serializable {
 
     public Music(int id, String imageMusic, String songName, String singer, String source) {
         this.id = id;
+        this.imageMusic = imageMusic;
+        this.songName = songName;
+        this.singer = singer;
+        this.source = source;
+    }
+
+    public Music(String imageMusic, String songName, String singer, String source) {
         this.imageMusic = imageMusic;
         this.songName = songName;
         this.singer = singer;

@@ -1,7 +1,8 @@
-package com.example.musicapplication.entity;
+package com.example.musicapplication.api;
+
+import com.example.musicapplication.entity.Music;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -19,7 +20,7 @@ public interface MusicRetrofit {
     Call<Music> getMusicById(@Path("id") int id);
 
     @POST("songInfo")
-    Call<Void> createMusic(@Body Music music);
+    Call<Void> insertMusic(@Body Music music);
 
     @PUT("songInfo/{id}")
     Call<Void> updateMusic(@Path("id") int id, @Body Music music);
